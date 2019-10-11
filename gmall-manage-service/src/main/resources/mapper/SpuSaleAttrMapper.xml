@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--namespace 接口全类名-->
+<mapper namespace="com.atguigu.gmall0422.manage.mapper.SpuSaleAttrMapper">
+    <!--id 唯一标识
+        type :表示方法返回的数据类型
+    -->
+    <resultMap id="spuSaleAttrMap" type="com.atguigu.gmall0422.bean.SpuSaleAttr" autoMapping="true">
+        <!--property :表示实体类的属性名
+         column:表示通过sql语句查询出来的字段名称-->
+        <id property="id" column="id" ></id>
+        <!--property :表示实体类的属性名
+            ofType:当前字段集合的返回数据类型
+         -->
+        <collection property="spuSaleAttrValueList" ofType="com.atguigu.gmall0422.bean.SpuSaleAttrValue" autoMapping="true">
+            <id property="id" column="sale_attr_value_id"></id>
+        </collection>
+
+    </resultMap>
+    <!--List<SpuSaleAttr> selectSpuSaleAttr(String spuId);-->
+    <select id="selectSpuSaleAttr" resultMap="spuSaleAttrMap">
+        select sa.id ,sa.spu_id, sa.sale_attr_name,sa.sale_attr_id,
+        sv.id sale_attr_value_id,
+        sv.sale_attr_value_name
+        from spu_sale_attr sa inner join spu_sale_attr_value  sv
+        on  sa.spu_id=sv.spu_id and sa.sale_attr_id=sv.sale_attr_id
+        where  sa.spu_id=#{0}
+
+    </select>
+</mapper>
